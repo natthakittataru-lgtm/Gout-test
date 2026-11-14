@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a3a8a" />
+    <title>GoutTest | ยินดีต้อนรับ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'IBM Plex Sans Thai', 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background: #eef2f9;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+            transition: background 0.4s ease;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.dark-mode { background: #0a0f1a; }
+        body.lang-en { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+
+        /* ============================================================
+           🌌 BACKGROUND
+           ============================================================ */
+        .bg-decor { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .bg-circle { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.35; }
+        .bg-circle.c1 { width: 320px; height: 320px; background: #4a8af4; top: -120px; right: -100px; }
+        .bg-circle.c2 { width: 280px; height: 280px; background: #1a3a8a; bottom: -120px; left: -100px; opacity: 0.22; }
+        .bg-circle.c3 { width: 200px; height: 200px; background: #93bbfc; top: 45%; left: 50%; transform: translate(-50%, -50%); opacity: 0.12; }
+
+        /* ============================================================
+           🔝 TOP BAR
+           ============================================================ */
+        .top-bar { position: fixed; top: max(16px, env(safe-area-inset-top)); right: 16px; display: flex; align-items: center; gap: 8px; z-index: 999; }
+        .top-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 42px; height: 42px; border-radius: 50%; border: none;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            color: #1a3a8a; font-size: 16px; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(10, 36, 99, 0.08);
+        }
+        body.dark-mode .top-btn { background: rgba(30, 39, 58, 0.85); color: #e2e8f0; }
+        .top-btn:active { transform: scale(0.92); }
+        .lang-btn { width: auto; padding: 0 16px; border-radius: 24px; gap: 6px; font-size: 13px; font-weight: 700; font-family: inherit; }
+        .lang-btn i { font-size: 14px; }
+
+        /* ============================================================
+           🃏 CARD
+           ============================================================ */
+        .home-card {
+            position: relative; z-index: 1; width: 100%; max-width: 440px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px; padding: 40px 28px 32px;
+            box-shadow: 0 20px 60px rgba(10, 36, 99, 0.08), 0 4px 12px rgba(10, 36, 99, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.4s ease; overflow: hidden;
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+        body.dark-mode .home-card {
+            background: rgba(20, 27, 43, 0.92);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .accent-bar {
+            position: absolute; top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, #1a3a8a, #2b5b9a, #4a8af4, #93bbfc);
+            background-size: 300% 100%;
+            border-radius: 32px 32px 0 0;
+            animation: shimmerAccent 4s ease-in-out infinite;
+        }
+        @keyframes shimmerAccent {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ============================================================
+           🩺 LOGO (กดได้ + ลูกเล่น)
+           ============================================================ */
+        .home-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #0a2463, #1a3a8a);
+            border-radius: 22px;
+            margin-bottom: 18px;
+            box-shadow: 
+                0 12px 32px rgba(26, 58, 138, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: floatLogo 3.5s ease-in-out infinite;
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;                            /* ✅ เปลี่ยนเป็นมือ */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .home-logo::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(74, 138, 244, 0.2), transparent);
+            z-index: -1;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* ✅ Tooltip */
+        .home-logo::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -34px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-6px);
+            background: rgba(10, 36, 99, 0.95);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            font-family: inherit;
+            z-index: 10;
+        }
+        .home-logo:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .home-logo i {
+            font-size: 34px;
+            color: #fff;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+            transition: transform 0.3s ease;
+        }
+
+        /* ✅ Hover Effect */
+        .home-logo:hover {
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 
+                0 16px 40px rgba(26, 58, 138, 0.4),
+                0 0 30px rgba(74, 138, 244, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .home-logo:hover i {
+            transform: scale(1.1);
+        }
+
+        /* ✅ Active Effect */
+        .home-logo:active {
+            transform: translateY(-2px) scale(0.95);
+        }
+
+        /* ✅ Click Animation */
+        @keyframes logoClick {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .home-logo.clicked {
+            animation: logoClick 0.3s ease;
+        }
+
+        /* ============================================================
+           🏷️ TITLE
+           ============================================================ */
+        .home-title {
+            font-size: 42px; font-weight: 800; color: #0a1628;
+            margin: 0; letter-spacing: -1.8px; line-height: 1.05;
+        }
+        body.lang-en .home-title { letter-spacing: -2px; }
+        .home-title span {
+            background: linear-gradient(135deg, #1a3a8a 0%, #4a8af4 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        body.dark-mode .home-title { color: #fff; }
+
+        .home-subtitle {
+            font-size: 15px; color: #64748b; margin: 12px 0 30px;
+            font-weight: 500; line-height: 1.7; max-width: 300px;
+        }
+        body.dark-mode .home-subtitle { color: #94a3b8; }
+
+        /* ============================================================
+           📦 FEATURES
+           ============================================================ */
+        .home-features { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 26px; }
+        .feature-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px;
+            background: rgba(238, 242, 249, 0.7);
+            border-radius: 16px; border: 1px solid rgba(26, 58, 138, 0.06);
+            text-align: left; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+        .feature-item:hover, .feature-item:active {
+            transform: translateX(4px);
+            background: rgba(238, 242, 249, 1);
+            border-color: rgba(74, 138, 244, 0.25);
+        }
+        body.dark-mode .feature-item { background: rgba(30, 39, 58, 0.6); border-color: rgba(255, 255, 255, 0.04); }
+        body.dark-mode .feature-item:hover { background: rgba(37, 47, 69, 0.9); border-color: rgba(74, 138, 244, 0.25); }
+
+        .feature-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 13px;
+            background: linear-gradient(135deg, #e0e9f7, #cddcf5);
+            color: #1a3a8a; font-size: 18px; flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .feature-item:hover .feature-icon { transform: scale(1.06); }
+        body.dark-mode .feature-icon { background: linear-gradient(135deg, #1e273a, #252f45); color: #4a8af4; }
+
+        .feature-text { flex: 1; min-width: 0; }
+        .feature-text h3 {
+            font-size: 13px; font-weight: 700; color: #0a1628;
+            margin: 0 0 3px; line-height: 1.4;
+        }
+        .feature-text p { font-size: 11px; color: #94a3b8; margin: 0; line-height: 1.45; }
+        body.dark-mode .feature-text h3 { color: #e8f0f8; }
+        body.dark-mode .feature-text p { color: #6a8aaa; }
+
+        /* ============================================================
+           🚀 START BUTTON
+           ============================================================ */
+        .start-button {
+            width: 100%; padding: 16px 24px;
+            background: linear-gradient(135deg, #1a3a8a, #2b5b9a);
+            color: #fff; border: none; border-radius: 16px;
+            font-size: 15px; font-weight: 700; font-family: inherit;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 32px rgba(26, 58, 138, 0.3);
+            position: relative; overflow: hidden; letter-spacing: 0.2px;
+        }
+        .start-button::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        .start-button:hover::before { left: 100%; }
+        .start-button:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(26, 58, 138, 0.4); }
+        .start-button:active { transform: scale(0.97); }
+        .start-button i { font-size: 16px; transition: transform 0.3s ease; }
+        .start-button:hover i { transform: translateX(4px); }
+
+        /* ============================================================
+           🛡️ NOTE
+           ============================================================ */
+        .home-note {
+            font-size: 11px; color: #94a3b8; margin-top: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            font-weight: 500; line-height: 1.4; text-align: center;
+        }
+        .home-note i { color: #1a3a8a; font-size: 12px; flex-shrink: 0; }
+        body.dark-mode .home-note { color: #6a8aaa; }
+        body.dark-mode .home-note i { color: #4a8af4; }
+
+        /* ============================================================
+           📱 RESPONSIVE
+           ============================================================ */
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            .home-card { padding: 34px 22px 26px; border-radius: 28px; }
+            .accent-bar { border-radius: 28px 28px 0 0; }
+            .home-logo { width: 64px; height: 64px; border-radius: 20px; margin-bottom: 16px; }
+            .home-logo i { font-size: 30px; }
+            .home-title { font-size: 34px; }
+            .home-subtitle { font-size: 14px; margin: 10px 0 26px; max-width: 100%; }
+            .feature-item { padding: 13px 14px; gap: 11px; border-radius: 14px; }
+            .feature-icon { width: 40px; height: 40px; font-size: 16px; border-radius: 11px; }
+            .feature-text h3 { font-size: 12px; }
+            .feature-text p { font-size: 10px; }
+            .start-button { padding: 14px 20px; font-size: 14px; border-radius: 14px; }
+            .top-btn { width: 38px; height: 38px; font-size: 14px; }
+            .lang-btn { font-size: 12px; padding: 0 14px; height: 38px; }
+        }
+        @media (max-width: 360px) {
+            body { padding: 12px; }
+            .home-card { padding: 28px 18px 22px; border-radius: 24px; }
+            .accent-bar { border-radius: 24px 24px 0 0; }
+            .home-logo { width: 56px; height: 56px; border-radius: 18px; margin-bottom: 14px; }
+            .home-logo i { font-size: 26px; }
+            .home-title { font-size: 30px; }
+            .home-subtitle { font-size: 13px; margin: 8px 0 22px; }
+            .feature-item { padding: 11px 12px; gap: 10px; border-radius: 12px; }
+            .feature-icon { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+            .feature-text h3 { font-size: 11px; }
+            .feature-text p { font-size: 9px; }
+            .start-button { padding: 13px 18px; font-size: 13px; border-radius: 12px; }
+            .home-note { font-size: 10px; }
+            .top-btn { width: 34px; height: 34px; font-size: 13px; }
+            .lang-btn { font-size: 11px; padding: 0 12px; height: 34px; }
+        }
+        @media (min-width: 600px) {
+            .home-card { padding: 48px 32px 36px; }
+            .home-logo { width: 80px; height: 80px; border-radius: 26px; }
+            .home-logo i { font-size: 38px; }
+            .home-title { font-size: 48px; }
+            .home-subtitle { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decor">
+        <div class="bg-circle c1"></div>
+        <div class="bg-circle c2"></div>
+        <div class="bg-circle c3"></div>
+    </div>
+
+    <div class="top-bar">
+        <button id="lang-toggle" class="top-btn lang-btn">
+            <i class="fas fa-globe"></i>
+            <span id="langLabel">TH</span>
+        </button>
+        <button id="theme-toggle" class="top-btn">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="home-card">
+        <div class="accent-bar"></div>
+
+        <!-- 🩺 Logo - กดได้ -->
+        <div class="home-logo" id="home-logo" data-tooltip="คลิกเพื่อเริ่มต้น" role="button" tabindex="0">
+            <i class="fas fa-stethoscope"></i>
+        </div>
+
+        <h1 class="home-title">Gout<span>Test</span></h1>
+        <p class="home-subtitle" id="homeSub">
+            ประเมินความเสี่ยงโรคเก๊าต์<br>จากระดับกรดยูริกในปัสสาวะ
+        </p>
+
+        <div class="home-features">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-user-md"></i></div>
+                <div class="feature-text">
+                    <h3 id="f1Title">กรอกประวัติส่วนตัว</h3>
+                    <p id="f1Desc">ข้อมูลพื้นฐานสำหรับการประเมิน</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-camera"></i></div>
+                <div class="feature-text">
+                    <h3 id="f2Title">สแกนชุดตรวจ</h3>
+                    <p id="f2Desc">ถ่ายรูปแถบตรวจเพื่อวิเคราะห์สี</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="feature-text">
+                    <h3 id="f3Title">รับผลประเมินทันที</h3>
+                    <p id="f3Desc">วิเคราะห์ความเสี่ยงและคำแนะนำ</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="start-button" id="start-btn">
+            <span id="startText">เริ่มต้นใช้งาน</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <p class="home-note">
+            <i class="fas fa-shield-alt"></i>
+            <span id="noteText">ข้อมูลของคุณปลอดภัย เก็บไว้ในเครื่องเท่านั้น</span>
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const langToggle = document.getElementById('lang-toggle');
+            const langLabel = document.getElementById('langLabel');
+            const startBtn = document.getElementById('start-btn');
+            const homeLogo = document.getElementById('home-logo');
+
+            let currentLang = 'th';
+
+            const texts = {
+                th: {
+                    homeSub: 'ประเมินความเสี่ยงโรคเก๊าต์<br>จากระดับกรดยูริกในปัสสาวะ',
+                    f1Title: 'กรอกประวัติส่วนตัว', f1Desc: 'ข้อมูลพื้นฐานสำหรับการประเมิน',
+                    f2Title: 'สแกนชุดตรวจ', f2Desc: 'ถ่ายรูปแถบตรวจเพื่อวิเคราะห์สี',
+                    f3Title: 'รับผลประเมินทันที', f3Desc: 'วิเคราะห์ความเสี่ยงและคำแนะนำ',
+                    startText: 'เริ่มต้นใช้งาน',
+                    noteText: 'ข้อมูลของคุณปลอดภัย เก็บไว้ในเครื่องเท่านั้น',
+                    tooltip: 'คลิกเพื่อเริ่มต้น'
+                },
+                en: {
+                    homeSub: 'Assess your gout risk<br>from urinary uric acid levels',
+                    f1Title: 'Enter Personal Info', f1Desc: 'Basic information for assessment',
+                    f2Title: 'Scan Test Strip', f2Desc: 'Capture the strip for color analysis',
+                    f3Title: 'Get Instant Results', f3Desc: 'Risk analysis and recommendations',
+                    startText: 'Get Started',
+                    noteText: 'Your data is secure and stored locally',
+                    tooltip: 'Click to start'
+                }
+            };
+
+            function applyLanguage(lang) {
+                const t = texts[lang];
+                document.getElementById('homeSub').innerHTML = t.homeSub;
+                document.getElementById('f1Title').textContent = t.f1Title;
+                document.getElementById('f1Desc').textContent = t.f1Desc;
+                document.getElementById('f2Title').textContent = t.f2Title;
+                document.getElementById('f2Desc').textContent = t.f2Desc;
+                document.getElementById('f3Title').textContent = t.f3Title;
+                document.getElementById('f3Desc').textContent = t.f3Desc;
+                document.getElementById('startText').textContent = t.startText;
+                document.getElementById('noteText').textContent = t.noteText;
+                homeLogo.setAttribute('data-tooltip', t.tooltip);
+                if (lang === 'en') {
+                    document.body.classList.add('lang-en');
+                } else {
+                    document.body.classList.remove('lang-en');
+                }
+                currentLang = lang;
+                langLabel.textContent = lang === 'th' ? 'EN' : 'TH';
+                localStorage.setItem('lang', lang);
+            }
+
+            langToggle.addEventListener('click', function() {
+                const newLang = currentLang === 'th' ? 'en' : 'th';
+                applyLanguage(newLang);
+            });
+
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+                localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            }
+
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.querySelector('i').className = 'fas fa-sun';
+            }
+            themeToggle.addEventListener('click', toggleTheme);
+
+            const savedLang = localStorage.getItem('lang') || 'th';
+            applyLanguage(savedLang);
+
+            // ============================================================
+            // ✅ กดโลโก้ → ไป profile.html
+            // ============================================================
+            homeLogo.addEventListener('click', function() {
+                homeLogo.classList.add('clicked');
+                setTimeout(() => { homeLogo.classList.remove('clicked'); }, 300);
+                setTimeout(() => { window.location.href = 'profile.html'; }, 250);
+            });
+
+            // ✅ กด Enter / Space ก็ได้
+            homeLogo.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    homeLogo.click();
+                }
+            });
+
+            // ============================================================
+            // ✅ กดปุ่ม "เริ่มต้นใช้งาน" → ไป profile.html
+            // ============================================================
+            startBtn.addEventListener('click', function() {
+                startBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => { startBtn.style.transform = 'scale(1)'; }, 200);
+                setTimeout(() => { window.location.href = 'profile.html'; }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
